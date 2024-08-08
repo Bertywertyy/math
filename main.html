@@ -1,0 +1,71 @@
+from flask import Flask, render_template_string, request
+import statistics
+
+app = Flask(__name__)
+
+index_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Calculator</title>
+</head>
+<body>
+    <h1>Enter Numbers</h1>
+    <form method="POST">
+        <label for="numbers">Enter numbers separated by commas:</label><br><br>
+        <input type="text" id="numbers" name="numbers" placeholder="e.g., 1, 2, 3, 4, 5"><br><br>
+        <button type="submit">Calculate</button>
+    </form>
+</body>
+</html>
+"""
+
+results_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Results</title>
+</head>
+<body>
+    <h1>Statistics Results</h1>
+    <p><strong>Numbers:</strong> {{ numbers }}</p>
+    <ul>
+        <li><strong>Mean:</strong> {{ stats['mean'] }}</li>
+        <li><strong>Median:</strong> {{ stats['median'] }}</li>
+        <li><strong>Mode:</strong> {{ stats['mode'] }}</li>
+        <li><strong>Standard Deviation:</strong> {{ stats['stdev'] }}</li>
+        <li><strong>Variance:</strong> {{ stats['variance'] }}</li>
+        <li><strong>Population Standard Deviation:</strong> {{ stats['pstdev'] }}</li>
+        <li><strong>Population Variance:</strong> {{ stats['pvariance'] }}</li>
+    </ul>
+    <br>
+    <a href="/">Go Back</a>
+</body>
+</html>
+"""
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        numbers = request.form.get('numbers')
+        if numbers:
+            numbers = [float(num) for num in numbers.split(',') if num.strip()]
+            if len(numbers) > 0:
+                stats = {
+                    'mean': statistics.mean(numbers),
+                    'median': statistics.median(numbers),
+                    'mode': statistics.mode(numbers) if len(set(numbers)) != len(numbers) else '無',
+                    'stdev': statistics.stdev(numbers),
+                    'variance': statistics.variance(numbers),
+                    'pstdev': statistics.pstdev(numbers),
+                    'pvariance': statistics.pvariance(numbers)
+                }
+                return render_template_string(results_html, stats=stats, numbers=numbers)
+    return render_template_string(index_html)
+
+if __name__ == '__main__':
+    app.run(debug=True)
