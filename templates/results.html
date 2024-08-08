@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Statistics Results</h1>
+    <p>Numbers: {{ numbers }}</p>
+    <p>算術平均數: {{ stats.mean }}</p>
+    <p>中位數: {{ stats.median }}</p>
+    <p>眾數: {{ stats.mode }}</p>
+    <p>標準差: {{ stats.stdev }}</p>
+    <p>變異數: {{ stats.variance }}</p>
+    <p>Population Standard Deviation: {{ stats.pstdev }}</p>
+    <p>Population Variance: {{ stats.pvariance }}</p>
+    <a href="/">Go Back</a>
+</body>
+</html>

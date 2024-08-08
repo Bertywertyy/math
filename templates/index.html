@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Enter Your Numbers</h1>
+    <form method="post">
+        {% for i in range(30) %}
+            <input type="text" name="numbers" placeholder="Number {{ i+1 }}">
+            <br>
+        {% endfor %}
+        <input type="submit" value="Calculate Statistics">
+    </form>
+</body>
+</html>
